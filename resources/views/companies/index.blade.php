@@ -10,7 +10,10 @@
         <div class="row">
             <div class="col-12 mb-2 d-flex justify-content-between align-items-center">
                 <div class="me-3"><h3>Companies</h3></div>
-                <a class="btn btn-success" href="{{ route('companies.create') }}">Create Company</a>
+                <div class="text-end">
+                    <a class="btn btn-success" href="{{ route('companies.create') }}">Create Company</a>
+                    <a class="btn btn-danger" href="{{ route('dashboard') }}">Back</a>
+                </div>
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -18,7 +21,7 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
-        @if ($message = Session::get('danger'))
+        @if ($message = Session::get('error'))
             <div class="alert alert-danger">
                 <p>{{ $message }}</p>
             </div>

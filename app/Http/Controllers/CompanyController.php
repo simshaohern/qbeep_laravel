@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Http\Resources\CompanyResource;
 
 class CompanyController extends Controller
 {
@@ -43,10 +44,20 @@ class CompanyController extends Controller
         return view('companies.edit',compact('company'));
     }
 
+    public function getCompany($id) {
+        $company = Company::find($id);
+    
+        if (!$company) {
+            return response()->json(['success' => false, 'message' => 'Company does not exist']);
+        }
+    
+        return response()->json(['success' => true, 'company' => new CompanyResource($company)]);
+    }
+
     public function update(Request $request, Company $company)
     {
         $request->validate([
-            'name' => 'required|string|unique:companies',
+            'name' => 'required|string|unique:companies,name,'.$company->id,
             'email' => 'nullable|string|email:rfc,dns',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'website' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
